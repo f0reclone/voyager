@@ -209,10 +209,12 @@ class Voyager
 
     public function setting($key, $default = null)
     {
-        $settings = self::model('GlobalSetting')->all();
-        $settings = $settings->merge(self::model('Setting')->all());
         if ($this->setting_cache === null) {
-            foreach ($settings as $setting) {
+            foreach (self::model('Setting')->all() as $setting) {
+                $keys = explode('.', $setting->key);
+                @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+            }
+            foreach (self::model('GlobalSetting')->all() as $setting) {
                 $keys = explode('.', $setting->key);
                 @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
             }
