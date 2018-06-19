@@ -232,8 +232,11 @@ class Voyager
 
     public function image($file, $default = '')
     {
-        if (!empty($file)) {
+        $match = preg_match('#^https?://#i', $file);
+        if (!empty($file) && !$match) {
             return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->url($file));
+        } else if ($match) {
+            return $file;
         }
 
         return $default;
