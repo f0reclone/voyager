@@ -211,7 +211,6 @@ class Voyager
     {
         $settings = self::model('GlobalSetting')->all();
         $settings = $settings->merge(self::model('Setting')->all());
-        dd($settings);
         if ($this->setting_cache === null) {
             foreach ($settings as $setting) {
                 $keys = explode('.', $setting->key);
