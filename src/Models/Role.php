@@ -8,7 +8,7 @@ use TCG\Voyager\Traits\HasRelationships;
 
 class Role extends Model
 {
-    use HasRelationships;
+    use HasRelationships, \Hyn\Tenancy\Traits\UsesSystemConnection;
 
     protected $guarded = [];
 

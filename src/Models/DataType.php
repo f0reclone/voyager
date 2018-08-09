@@ -10,7 +10,7 @@ use TCG\Voyager\Traits\Translatable;
 
 class DataType extends Model
 {
-    use Translatable;
+    use Translatable, \Hyn\Tenancy\Traits\UsesSystemConnection;
 
     protected $translatable = ['display_name_singular', 'display_name_plural'];
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataRow extends Model
 {
+    use \Hyn\Tenancy\Traits\UsesSystemConnection;
     protected $table = 'data_rows';
 
     protected $guarded = [];

@@ -9,8 +9,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
-
+    <link rel="icon" type="image/png" href="/images/DriveBeyond-Favicon-16x16-transparent.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/images/DriveBeyond-Favicon-32x32-transparent.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/DriveBeyond-Favicon-96x96-transparent.png" sizes="96x96">
 
 
     <!-- App CSS -->
