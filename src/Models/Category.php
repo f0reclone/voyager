@@ -10,7 +10,7 @@ use TCG\Voyager\Traits\Translatable;
 class Category extends Model
 {
     use Translatable,
-        HasRelationships;
+        HasRelationships, \Hyn\Tenancy\Traits\UsesTenantConnection;
 
     protected $translatable = ['slug', 'name'];
 

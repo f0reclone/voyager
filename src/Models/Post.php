@@ -14,7 +14,7 @@ class Post extends Model
 {
     use Translatable,
         Resizable,
-        HasRelationships;
+        HasRelationships, \Hyn\Tenancy\Traits\UsesTenantConnection;
 
     protected $translatable = ['title', 'seo_title', 'excerpt', 'body', 'slug', 'meta_description', 'meta_keywords'];
 

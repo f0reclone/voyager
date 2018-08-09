@@ -11,7 +11,7 @@ use TCG\Voyager\Traits\VoyagerUser;
 class User extends Authenticatable implements UserContract
 {
     use VoyagerUser,
-        HasRelationships;
+        HasRelationships, \Hyn\Tenancy\Traits\UsesTenantConnection;
 
     protected $guarded = [];
 
