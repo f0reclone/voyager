@@ -200,14 +200,6 @@ $(document).ready(function () {
 
                     var $inputElement = $('#' + inputName.split('.').join(""));
 
-                    $inputElement.addClass("error");
-
-
-                    // Hightlight and show the error message
-
-                    $inputElement.parent()
-                        .append("<span class='help-block' style='color:#f96868'>" + errorMessage + "</span>");
-
                     // Hightlight and show the error message
                     $inputElement.parent()
                         .addClass("has-error")
