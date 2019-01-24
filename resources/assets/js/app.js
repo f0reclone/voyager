@@ -197,19 +197,17 @@ $(document).ready(function () {
                 $.each(d.errors, function (inputName, errorMessage) {
 
                     // This will work also for fields with brackets in the name, ie. name="image[]
-                    /*
-                    var $inputElement = $("[name='" + inputName + "']"),
-                        inputElementPosition = $inputElement.first().parent().offset().top,
-                        navbarHeight = $('nav.navbar').height();
-                    */
-                    // Scroll to first error
-                    /*
-                    if (Object.keys(d.errors).indexOf(inputName) === 0) {
-                        $('html, body').animate({
-                            scrollTop: inputElementPosition - navbarHeight + 'px'
-                        }, 'fast');
-                    }
-                    */
+
+                    var $inputElement = $('#' + inputName.split('.').join(""));
+
+                    $inputElement.addClass("error");
+
+
+                    // Hightlight and show the error message
+
+                    $inputElement.parent()
+                        .append("<span class='help-block' style='color:#f96868'>" + errorMessage + "</span>");
+
                     // Hightlight and show the error message
                     $inputElement.parent()
                         .addClass("has-error")
