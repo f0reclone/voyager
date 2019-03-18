@@ -48,8 +48,8 @@ abstract class Controller extends BaseController
          * Prepare Translations and Transform data
          */
         $translations = is_bread_translatable($data)
-                        ? $data->prepareTranslations($request)
-                        : [];
+            ? $data->prepareTranslations($request)
+            : [];
 
         foreach ($rows as $row) {
             // if the field for this row is absent from the request, continue
@@ -128,9 +128,9 @@ abstract class Controller extends BaseController
      * Validates bread POST request.
      *
      * @param \Illuminate\Http\Request $request The Request
-     * @param array                    $data    Field data
-     * @param string                   $slug    Slug
-     * @param int                      $id      Id of the record to update
+     * @param array $data Field data
+     * @param string $slug Slug
+     * @param int $id Id of the record to update
      *
      * @return mixed
      */
@@ -226,7 +226,8 @@ abstract class Controller extends BaseController
      *
      * @return \Illuminate\Support\Collection
      */
-    protected function getFieldsWithValidationRules($fieldsConfig)
+    protected
+    function getFieldsWithValidationRules($fieldsConfig)
     {
         return $fieldsConfig->filter(function ($value) {
             if (empty($value->details)) {
