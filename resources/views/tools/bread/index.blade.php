@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager::generic.viewing').' '.__('voyager::generic.bread'))
+@section('page_title', __('voyager::generic.viewing', ['name' => __('voyager::generic.bread')]))
 
 @section('page_header')
     <h1 class="page-title">
