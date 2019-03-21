@@ -97,7 +97,8 @@ return [
     'url'                    => 'URL',
     'view_param'             => ':name anzeigen',
     'view'                   => 'Anzeigen',
-    'viewing'                => 'Zeige :name',
+    'viewing'                => 'Zeige',
+    'viewing_param'          => 'Zeige :name',
     'yes'                    => 'Ja',
     'yes_please'             => 'Ja, Bitte',
 ];
