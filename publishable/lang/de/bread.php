@@ -42,6 +42,7 @@ return [
     'policy_class'           => 'Policy Klassenname',
     'policy_name'            => 'Policy Name',
     'policy_name_ph'         => 'Bspw. \App\Policies\UserPolicy, falls leer gelassen wird versucht den Default Wert zu verwenden.',
+    'restore'                => 'Wiederherstellen',
     'server_pagination'      => 'Serverseitige Pagination',
     'updated_order'          => 'Reihenfolge erfolgreich geändert',
     'url_slug'               => 'URL Slug (muss unique sein)',
