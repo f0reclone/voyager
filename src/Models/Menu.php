@@ -4,7 +4,6 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -31,21 +30,21 @@ class Menu extends Model
     /**
      * Display menu.
      *
-     * @param string      $menuName
+     * @param string $menuName
      * @param string|null $type
-     * @param array       $options
+     * @param array $options
      *
      * @return string
      */
     public static function display($menuName, $type = null, array $options = [])
     {
         // GET THE MENU - sort collection in blade
-        $menu = \Cache::remember('voyager_menu_'.$menuName, \Carbon\Carbon::now()->addDays(30), function () use ($menuName) {
+        $menu = \Cache::remember('voyager_menu_' . $menuName, \Carbon\Carbon::now()->addDays(30), function () use ($menuName) {
             return static::where('name', '=', $menuName)
-            ->with(['parent_items.children' => function ($q) {
-                $q->orderBy('order');
-            }])
-            ->first();
+                ->with(['parent_items.children' => function ($q) {
+                    $q->orderBy('order');
+                }])
+                ->first();
         });
 
         // Check for Menu Existence
@@ -56,7 +55,7 @@ class Menu extends Model
         event(new MenuDisplay($menu));
 
         // Convert options array into object
-        $options = (object) $options;
+        $options = (object)$options;
 
         $items = $menu->parent_items->sortBy('order');
 
@@ -65,7 +64,7 @@ class Menu extends Model
         }
 
         if ($type == 'admin') {
-            $type = 'voyager::menu.'.$type;
+            $type = 'voyager::menu.' . $type;
         } else {
             if (is_null($type)) {
                 $type = 'voyager::menu.default';
@@ -90,7 +89,7 @@ class Menu extends Model
     public function save(array $options = [])
     {
         //Remove from cache
-        \Cache::forget('voyager_menu_'.$this->name);
+        \Cache::forget('voyager_menu_' . $this->name);
 
         parent::save();
     }
@@ -101,20 +100,19 @@ class Menu extends Model
             // Translate title
             $item->title = $item->getTranslatedAttribute('title');
             // Resolve URL/Route
-            $item->href = $item->link();
+            $item->href = $item->link(true);
 
-            if (url($item->href) == url()->current() && $item->href != '') {
+            if ($item->href == url()->current() && $item->href != '') {
                 // The current URL is exactly the URL of the menu-item
                 $item->active = true;
-            } elseif (starts_with(url()->current(), Str::finish(url($item->href), '/'))) {
+            } elseif (starts_with(url()->current(), Str::finish($item->href, '/'))) {
                 // The current URL is "below" the menu-item URL. For example "admin/posts/1/edit" => "admin/posts"
                 $item->active = true;
             }
-
-            if (($item->href == '' || url($item->href) == route('voyager.dashboard')) && $item->children->count() > 0) {
+            if (($item->href == url('') || $item->href == route('voyager.dashboard')) && $item->children->count() > 0) {
                 // Exclude sub-menus
                 $item->active = false;
-            } elseif (url($item->href) == route('voyager.dashboard') && url()->current() != route('voyager.dashboard')) {
+            } elseif ($item->href == route('voyager.dashboard') && url()->current() != route('voyager.dashboard')) {
                 // Exclude dashboard
                 $item->active = false;
             }
@@ -133,8 +131,16 @@ class Menu extends Model
         // Filter items by permission
         $items = $items->filter(function ($item) {
             return !$item->children->isEmpty() || app('VoyagerAuth')->user()->can('browse', $item);
+        })->filter(function ($item) {
+            // Filter out empty menu-items
+            if ($item->url == '' && $item->route == '' && $item->children->count() == 0) {
+                return false;
+            }
+
+            return true;
         });
 
         return $items->values();
     }
+
 }

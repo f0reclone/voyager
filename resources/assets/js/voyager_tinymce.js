@@ -1,4 +1,18 @@
-$(document).ready(function () {
+
+// Theme
+import 'tinymce/themes/modern/theme';
+
+  // Plugins
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/code';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/textcolor';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/paste';
+
+$(document).ready(function(){
+
 
     $.ajaxSetup({
         headers: {
@@ -9,10 +23,11 @@ $(document).ready(function () {
     tinymce.init({
         menubar: false,
         selector: 'textarea.richTextBox',
-        skin: 'voyager',
+        skin_url: $('meta[name="assets-path"]').attr('content')+'?path=js/skins/voyager',
         min_height: 600,
         resize: 'vertical',
-        plugins: 'link, image, code, table, textcolor, lists',
+        plugins: 'link, image, code, table, textcolor, lists, paste',
+        paste_as_text: true,
         extended_valid_elements: 'input[id|name|value|type|class|style|required|placeholder|autocomplete|onclick]',
         file_browser_callback: function (field_name, url, type, win) {
             if (type == 'image') {
