@@ -9,7 +9,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i>
-        {{ __('voyager::generic.'.(isset($dataTypeContent->id) ? 'edit_param' : 'add_param'), ['name' => $dataType->display_name_singular] }}
+        {{ __('voyager::generic.'.(isset($dataTypeContent->id) ? 'edit_param' : 'add_param'), ['name' => $dataType->display_name_singular]) }}
     </h1>
 @stop
 
