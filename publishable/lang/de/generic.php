@@ -31,7 +31,6 @@ return [
     'delete'                 => 'Löschen',
     'delete_confirm'         => 'Ja, löschen!',
     'delete_question'        => 'Wirklich löschen',
-    'delete_question_param'  => ':name wirklich löschen',
     'delete_this_confirm'    => 'Ja, löschen',
     'descending'             => 'Absteigend',
     'deselect_all'           => 'Alles abwählen',
