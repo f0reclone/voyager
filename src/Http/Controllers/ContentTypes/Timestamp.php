@@ -18,6 +18,6 @@ class Timestamp extends BaseType
             return;
         }
 
-        return Carbon::parse($content);
+        return Carbon::parse($content, 'Europe/Berlin');
     }
 }
