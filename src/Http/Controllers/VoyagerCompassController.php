@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use TCG\Voyager\Facades\Voyager;
 
 class VoyagerCompassController extends Controller
 {
@@ -49,9 +48,9 @@ class VoyagerCompassController extends Controller
             app('files')->delete(LogViewer::pathToLogFile(base64_decode($this->request->input('del'))));
 
             return $this->redirect($this->request->url().'?logs=true')->with([
-                'message'    => __('voyager::compass.commands.delete_success').' '.base64_decode($this->request->input('del')),
+                'message'    => __('voyager::compass.logs.delete_success').' '.base64_decode($this->request->input('del')),
                 'alert-type' => 'success',
-                ]);
+            ]);
         } elseif ($this->request->has('delall')) {
             $active_tab = 'logs';
             foreach (LogViewer::getFiles(true) as $file) {
@@ -59,9 +58,9 @@ class VoyagerCompassController extends Controller
             }
 
             return $this->redirect($this->request->url().'?logs=true')->with([
-                'message'    => __('voyager::compass.commands.delete_all_success'),
+                'message'    => __('voyager::compass.logs.delete_all_success'),
                 'alert-type' => 'success',
-                ]);
+            ]);
         }
 
         $artisan_output = '';

@@ -80,7 +80,9 @@ class MultipleImage extends BaseType
                             $thumb_resize_height = $thumb_resize_height * $scale;
                         }
 
-                        $image = InterventionImage::make($file)->orientate()->resize(
+                        $image = InterventionImage::make($file)
+                            ->orientate()
+                            ->resize(
                             $thumb_resize_width,
                             $thumb_resize_height,
                             function (Constraint $constraint) {
@@ -93,7 +95,8 @@ class MultipleImage extends BaseType
                     } elseif (isset($this->options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                         $crop_width = $thumbnails->crop->width;
                         $crop_height = $thumbnails->crop->height;
-                        $image = InterventionImage::make($file)->orientate()
+                        $image = InterventionImage::make($file)
+                            ->orientate()
                             ->fit($crop_width, $crop_height)
                             ->encode($file->getClientOriginalExtension(), $resize_quality);
                     }

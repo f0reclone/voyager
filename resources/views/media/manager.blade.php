@@ -1,12 +1,12 @@
 @section('media-manager')
 <div>
-    <div v-if="hidden_element" class="dd">
+    <div v-if="hidden_element" :id="'dd_'+this._uid" class="dd">
         <ol id="files" class="dd-list">
             <li v-for="file in getSelectedFiles()" class="dd-item" :data-url="file">
                 <div class="file_link selected" aria-hidden="true" data-toggle="tooltip" data-placement="auto" :title="file">
                     <div class="link_icon">
                         <template v-if="fileIs(file, 'image')">
-                            <div class="img_icon" :style="imgIcon('{{ Storage::disk(config('voyager.storage.disk'))->url('') }}'+file)"></div>
+                            <div class="img_icon" :style="imgIcon('{{ Storage::disk(config('voyager.storage.disk'))->url('/') }}'+file)"></div>
                         </template>
                         <template v-else-if="fileIs(file, 'video')">
                             <i class="icon voyager-video"></i>
@@ -198,6 +198,17 @@
                                     <p>@{{ dateFilter(selected_file.last_modified) }}</p>
                                 </span>
                             </template>
+
+                            <span v-if="fileIs(selected_file, 'image') && selected_file.thumbnails.length > 0">
+                                <h4>Thumbnails</h4><br>
+                                <ul>
+                                    <li v-for="thumbnail in selected_file.thumbnails">
+                                        <a :href="thumbnail.path" target="_blank">
+                                            @{{ thumbnail.thumb_name }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </span>
                         </div>
                     </div>
                     <div v-else class="right_none_selected">
@@ -316,7 +327,7 @@
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::media.crop_image') }}</h4>
+                    <h4 class="modal-title">{{ __('voyager::media.crop_image') }}</h4>
                 </div>
 
                 <div class="modal-body">
@@ -409,7 +420,13 @@
             element: {
                 type: String,
                 default: ""
-            }
+            },
+            details: {
+                type: Object,
+                default: function() {
+                    return {};
+                }
+            },
         },
         data: function() {
             return {
@@ -438,7 +455,7 @@
             getFiles: function() {
                 var vm = this;
                 vm.is_loading = true;
-                $.post('{{ route('voyager.media.files') }}', { folder: vm.current_folder, _token: '{{ csrf_token() }}' }, function(data) {
+                $.post('{{ route('voyager.media.files') }}', { folder: vm.current_folder, _token: '{{ csrf_token() }}', details: vm.details }, function(data) {
                     vm.files = [];
                     for (var i = 0, file; file = data[i]; i++) {
                         if (vm.filter(file)) {
@@ -501,7 +518,7 @@
             },
             openFile: function(file) {
                 if (file.type == 'folder') {
-                    this.current_folder += "/"+file.name;
+                    this.current_folder += file.name+"/";
                     this.getFiles();
                 } else if (this.hidden_element) {
                     this.addFileToInput(file);
@@ -541,7 +558,7 @@
                 } else {
                     var path = this.getCurrentPath();
                     path.length = i + 1;
-                    this.current_folder = this.basePath+path.join('/');
+                    this.current_folder = this.basePath+path.join('/') + '/';
                 }
 
                 this.getFiles();
@@ -588,6 +605,7 @@
                         } else {
                             content.push(file.relative_path);
                             this.hidden_element.value = JSON.stringify(content);
+                            this.$forceUpdate();
                         }
                     }
                 }
@@ -768,7 +786,6 @@
                 if (!this.hidden_element) {
                     console.error('Element "'+this.element+'" could not be found.');
                 } else {
-                    this.expanded = false;
                     if (this.maxSelectedFiles > 1 && this.hidden_element.value == '') {
                         this.hidden_element.value = '[]';
                     }
@@ -831,6 +848,7 @@
                         formData.append("_token", '{{ csrf_token() }}');
                         formData.append("upload_path", vm.current_folder);
                         formData.append("filename", vm.filename);
+                        formData.append("details", JSON.stringify(vm.details));
                     },
                     success: function(e, res) {
                         if (res.success) {
@@ -896,16 +914,15 @@
                 });
 
                 //Nestable
-                $('.dd').nestable({
+                $('#dd_'+vm._uid).nestable({
                     maxDepth: 1,
                     handleClass: 'file_link',
                     collapseBtnHTML: '',
                     expandBtnHTML: '',
-                    emptyClass : '',
                     callback: function(l, e) {
                         if (vm.allowMultiSelect) {
                             var new_content = [];
-                            var object = $('.dd').nestable('serialize');
+                            var object = $('#dd_'+vm._uid).nestable('serialize');
                             for (var key in object) {
                                 new_content.push(object[key].url);
                             }
@@ -925,3 +942,11 @@
         },
     });
 </script>
+<style>
+.dd-placeholder {
+    flex: 1;
+    width: 100%;
+    min-width: 200px;
+    max-width: 250px;
+}
+</style>

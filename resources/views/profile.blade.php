@@ -35,6 +35,7 @@
         <div class="circular--portrait">
             <img src="@if( !filter_var(app('VoyagerAuth')->user()->avatar, FILTER_VALIDATE_URL)){{ Voyager::image( app('VoyagerAuth')->user()->avatar ) }}@else{{ app('VoyagerAuth')->user()->avatar }}@endif"
                  class="avatar"
+                 style="border-radius:50%; width:150px; height:150px; border:5px solid #fff;"
                  alt="{{ app('VoyagerAuth')->user()->name }} avatar">
         </div>
         <h4>{{ ucwords(app('VoyagerAuth')->user()->name) }}</h4>
@@ -42,5 +43,8 @@
         <p>{{ app('VoyagerAuth')->user()->bio }}</p>
         <a href="{{ route('voyager.users.edit', app('VoyagerAuth')->user()->getKey()) }}"
            class="btn btn-primary">{{ __('voyager::profile.edit') }}</a>
+        @if ($route != '')
+            <a href="{{ $route }}" class="btn btn-primary">{{ __('voyager::profile.edit') }}</a>
+        @endif
     </div>
 @stop

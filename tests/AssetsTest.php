@@ -6,27 +6,45 @@ use Illuminate\Support\Facades\Auth;
 
 class AssetsTest extends TestCase
 {
-    public function testCanLoadVoyagerCss()
+    protected $prefix = '/voyager-assets?path=';
+
+    public function setUp(): void
     {
-        $response = $this->call('GET', voyager_asset('css/app.css'));
-        $this->assertEquals(200, $response->status());
+        parent::setUp();
+
+        Auth::loginUsingId(1);
     }
 
-    public function testCanLoadVoyagerJs()
+    public function testCanOpenFileInAssets()
     {
-        $response = $this->call('GET', voyager_asset('js/app.js'));
-        $this->assertEquals(200, $response->status());
+        $url = route('voyager.dashboard').$this->prefix.'css/app.css';
+
+        $response = $this->call('GET', $url);
+        $this->assertEquals(200, $response->status(), $url.' did not return a 200');
     }
 
-    public function testCannotLoadAssets()
+    public function urlProvider()
     {
-        $response = $this->call('GET', voyager_asset('not_existing_file.css'));
-        $this->assertEquals(404, $response->status());
+        return [
+            [
+                '../dummy_content/pages/page1.jpg',
+                '..../dummy_content/pages/page1.jpg',
+                'images/../../dummy_content/pages/page1.jpg',
+                '....//dummy_content/pages/page1.jpg',
+                '..\dummy_content/pages/page1.jpg',
+                '....\dummy_content/pages/page1.jpg',
+                'images/..\..\dummy_content/pages/page1.jpg',
+                'images/....\\....\\dummy_content/pages/page1.jpg',
+            ],
+        ];
     }
 
-    public function testCannotLoadFileOutside()
+    /**
+     * @dataProvider  urlProvider
+     */
+    public function testCannotOpenFileOutsideAssets($url)
     {
-        $response = $this->call('GET', voyager_asset('../src/Voyager.php'));
-        $this->assertEquals(404, $response->status());
+        $response = $this->call('GET', route('voyager.dashboard').$this->prefix.$url);
+        $this->assertEquals(404, $response->status(), $url.' did not return a 404');
     }
 }

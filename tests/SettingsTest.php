@@ -29,8 +29,8 @@ class SettingsTest extends TestCase
              ->press(__('voyager::settings.save'))
              ->seePageIs(route('voyager.settings.index'))
              ->seeInDatabase('settings', [
-                'key'   => $key,
-                'value' => $newTitle,
+                 'key'   => $key,
+                 'value' => $newTitle,
              ]);
     }
 
@@ -44,12 +44,11 @@ class SettingsTest extends TestCase
              ->press(__('voyager::settings.add_new'))
              ->seePageIs(route('voyager.settings.index'))
              ->seeInDatabase('settings', [
-                'display_name' => 'New Setting',
-                'key'          => 'site.new_setting',
-                'type'         => 'text',
-                'group'        => 'Site'
+                 'display_name' => 'New Setting',
+                 'key'          => 'site.new_setting',
+                 'type'         => 'text',
+                 'group'        => 'Site',
              ]);
-
     }
 
     public function testCanDeleteSetting()
@@ -59,10 +58,9 @@ class SettingsTest extends TestCase
         $this->call('DELETE', route('voyager.settings.delete', $setting->id));
 
         $this->notSeeInDatabase('settings', [
-           'id'    => $setting->id,
+            'id'    => $setting->id,
         ]);
     }
-
 
     public function testCanDeleteSettingsValue()
     {
@@ -72,8 +70,8 @@ class SettingsTest extends TestCase
         $this->call('PUT', route('voyager.settings.delete_value', $setting->id));
 
         $this->seeInDatabase('settings', [
-           'id'    => $setting->id,
-           'value' => ''
+            'id'    => $setting->id,
+            'value' => '',
         ]);
     }
 
@@ -84,8 +82,8 @@ class SettingsTest extends TestCase
         $this->call('GET', route('voyager.settings.move_up', $setting->id));
 
         $this->seeInDatabase('settings', [
-           'id'    => $setting->id,
-           'order' => ($setting->order - 1),
+            'id'    => $setting->id,
+            'order' => ($setting->order - 1),
         ]);
     }
 
@@ -96,8 +94,8 @@ class SettingsTest extends TestCase
         $this->call('GET', route('voyager.settings.move_down', $setting->id));
 
         $this->seeInDatabase('settings', [
-           'id'    => $setting->id,
-           'order' => ($setting->order + 1),
+            'id'    => $setting->id,
+            'order' => ($setting->order + 1),
         ]);
     }
 }

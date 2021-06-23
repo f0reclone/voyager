@@ -17,15 +17,15 @@ class MenuTest extends TestCase
     public function testCanRenameMenu()
     {
         $menu = Menu::where('name', '=', 'admin')->first();
-        $this->visitRoute('voyager.menus.edit', ['id' => $menu->id])
+        $this->visitRoute('voyager.menus.edit', $menu->id)
              ->seeInField('name', $menu->name)
              ->type('new_admin', 'name')
              ->seeInElement('button', __('voyager::generic.save'))
              ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.menus.index'))
              ->seeInDatabase('menus', [
-                'id'   => $menu->id,
-                'name' => 'new_admin',
+                 'id'   => $menu->id,
+                 'name' => 'new_admin',
              ]);
     }
 
@@ -34,9 +34,9 @@ class MenuTest extends TestCase
         $menu = Menu::where('name', '=', 'admin')->first();
         $this->delete(route('voyager.menus.item.destroy', [
             'menu' => $menu->id,
-            'id'   => $menu->items->first()->id
+            'id'   => $menu->items->first()->id,
         ]))->notSeeInDatabase('menu_items', [
-            'id' => $menu->items->first()->id
+            'id' => $menu->items->first()->id,
         ]);
     }
 
@@ -47,33 +47,32 @@ class MenuTest extends TestCase
             'menu'    => $menu->id,
             'menu_id' => $menu->id,
             'type'    => 'url',
-            'color'   =>'#000000',
+            'color'   => '#000000',
             'title'   => 'Title',
             'url'     => '#',
             'target'  => '_self',
         ]))->seeInDatabase('menu_items', [
             'menu_id' => $menu->id,
-            'title'   => 'Title'
+            'title'   => 'Title',
         ]);
     }
 
     public function testCanUpdateMenuItem()
     {
-
         $menu = Menu::where('name', '=', 'admin')->first();
         $item = $menu->items->first();
         $this->put(route('voyager.menus.item.update', [
             'id'      => $item->id,
             'menu'    => $menu->id,
             'type'    => 'url',
-            'color'   =>'#000000',
+            'color'   => '#000000',
             'title'   => 'New Title',
             'url'     => '#',
             'target'  => '_self',
         ]))->seeInDatabase('menu_items', [
             'menu_id' => $menu->id,
             'id'      => $item->id,
-            'title'   => 'New Title'
+            'title'   => 'New Title',
         ]);
     }
 
