@@ -10,9 +10,8 @@ import 'tinymce/plugins/textcolor';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/paste';
 import 'tinymce/plugins/media';
-import 'tinymce/plugins/youtube';
+import 'tinymce/plugins/youtube/plugin';
 
-import 'tinymce/plugins'
 
 $(document).ready(function(){
 
