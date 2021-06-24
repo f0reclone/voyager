@@ -8,6 +8,11 @@ import 'tinymce/plugins/code';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/textcolor';
 import 'tinymce/plugins/lists';
+import 'tinymce/plugins/paste';
+import 'tinymce/plugins/media';
+import 'tinymce/plugins/youtube';
+
+import 'tinymce/plugins'
 
 $(document).ready(function(){
 
@@ -23,7 +28,7 @@ $(document).ready(function(){
         skin_url: $('meta[name="assets-path"]').attr('content')+'?path=js/skins/voyager',
         min_height: 600,
         resize: 'vertical',
-        plugins: 'link, image, code, table, textcolor, lists',
+        plugins: 'link, image, code, table, textcolor, lists, paste, media, youtube',
         extended_valid_elements : 'input[id|name|value|type|class|style|required|placeholder|autocomplete|onclick]',
         file_browser_callback: function(field_name, url, type, win) {
             if(type =='image'){
